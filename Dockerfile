@@ -11,13 +11,12 @@ WORKDIR /usr/src/app
 # A wildcard is used to ensure copying both package.json AND package-lock.json (when available).
 # Copying this first prevents re-running npm install on every code change.
 COPY package*.json ./
-COPY .env ./
-
-
+COPY . .
 
 # Install app dependencies using the `npm ci` command instead of `npm install`
-RUN yarn install --frozen-lockfile
-
+RUN npm ci
+RUN npx prisma generate
+RUN npm run start:dev
 # Bundle app source
 COPY --chown=node:node . .
 
