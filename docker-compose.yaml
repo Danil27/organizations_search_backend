@@ -1,23 +1,6 @@
 version: '3.4'
 
 services:
-  organization_search_beckend:
-    build:
-      dockerfile: Dockerfile
-      context: .
-      # Only will build development stage from our dockerfile
-      target: production
-    depends_on:
-      - postgres
-    links:
-      - postgres
-    volumes:
-      - .:/usr/src/app
-    # Run a command against the development stage of the image
-    command: npm run start:prod
-    ports:
-      - ${APP_PORT}:3072
-
   postgres:
     container_name: os_postgres
     image: postgres:latest
@@ -34,6 +17,23 @@ services:
       - .env
     networks:
       - postgres
+
+  organization_search_beckend:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      # Only will build development stage from our dockerfile
+      target: production
+    depends_on:
+      - postgres
+    links:
+      - postgres
+    volumes:
+      - .:/usr/src/app
+    # Run a command against the development stage of the image
+    command: npm run start:prod
+    ports:
+      - ${APP_PORT}:3072
 
 networks:
   postgres:
